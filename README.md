@@ -14,3 +14,7 @@ To install MicroTunnel on a workstation that will have users daily-driving:
 To install MicroTunnel on a server that will be sharing files to users/groups:
 
 `.\DeployMicroTunnel_DirectDownload.ps1 -OrgId <YOUR_ORG_ID> -svr`
+# Example using the SyncroMSP script:
+Set up a script in Syncro with the parameter "orgId" as a **runtime** variable and "installType" as a **dropdown** variable with the options of "Workstation" and "Server" -- defaulted to Workstation makes sense to us.
+
+<img width="1267" height="1099" alt="Screenshot_SyncroMSP Script Setup" src="https://github.com/ZelekTech/MicroTunnel-Deployment-Tool/blob/main/Screenshot_SyncroMSP%20Script%20Setup.png" />
