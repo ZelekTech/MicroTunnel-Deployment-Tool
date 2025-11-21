@@ -92,6 +92,35 @@ function Get-MicroTunnelInstaller {
     }
 }
 
+function Set-FirstRunWizardBypass {
+    # Ensure IE First Run Customize is disabled via policy
+    $keyPath = 'Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Internet Explorer\Main'
+    $propertyName = 'DisableFirstRunCustomize'
+    $desiredValue = 1
+
+    try {
+        if (-not (Test-Path -Path $keyPath)) {
+            New-Item -Path $keyPath -Force | Out-Null
+        }
+
+        $current = $null
+        $reg = Get-ItemProperty -Path $keyPath -ErrorAction SilentlyContinue
+        if ($reg -and ($reg.PSObject.Properties.Name -contains $propertyName)) {
+            $current = [int]$reg.$propertyName
+        }
+
+        if ($null -eq $current -or $current -ne $desiredValue) {
+            New-ItemProperty -Path $keyPath -Name $propertyName -PropertyType DWord -Value $desiredValue -Force | Out-Null
+        }
+        return $true
+    }
+    catch {
+        return $false
+    }
+}
+
+Set-FirstRunWizardBypass
+
 $alertMessage = $null
 
 # Validate parameters.
